@@ -5,14 +5,14 @@ import Character from '../domain/character';
 
 const searchSubject = new BehaviorSubject<string>('');
 
-export const useSearch = (updateCharacters: (value: Character[]) => void) => {
+export const useSearch = (setCharacters: (value: Character[]) => void) => {
 
   useEffect(() => {
     const subscription = searchSubject.pipe(debounceTime(300), switchMap(
         (name) => fetchCharactersByName(name).then(res => res.data.results).catch(() => null))
     ).subscribe({
         next: (results) => {
-            updateCharacters(results);
+            setCharacters(results == null ? [] : results);
         },
       });
 

@@ -2,11 +2,11 @@ import Character from '../domain/character';
 import { useSearch } from '../hooks/useSearch';
 
 interface SearchProps {
-    updateCharacters: (value: Character[]) => void;
-  }
+    setCharacters: (value: Character[]) => void;
+}
 
-const Search = ({ updateCharacters }: SearchProps) => {
-  const { search } = useSearch(updateCharacters);
+const Search = ({ setCharacters }: SearchProps) => {
+  const { search } = useSearch(setCharacters);
 
   return (
     <div>
