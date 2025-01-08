@@ -1,6 +1,6 @@
 "use client";
 import Home from "../pages/home";
-import Navbar from "../pages/navbar";
+import Navbar from "../components/navbar";
 
 const App = () => {
   return (
