@@ -8,13 +8,13 @@ const searchSubject = new BehaviorSubject<string>('');
 export const useSearch = (setCharacters: (value: Character[]) => void) => {
 
   useEffect(() => {
-    const subscription = searchSubject.pipe(debounceTime(300), switchMap(
-        (name) => fetchCharactersByName(name).then(res => res.data.results).catch(() => null))
-    ).subscribe({
+    const subscription = searchSubject
+    .pipe(debounceTime(300), switchMap((name) => fetchCharactersByName(name).then(res => res.data.results).catch(() => null)))
+    .subscribe({
         next: (results) => {
             setCharacters(results == null ? [] : results);
         },
-      });
+    });
 
     return () => subscription.unsubscribe();
   }, []);
