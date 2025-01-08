@@ -7,11 +7,11 @@ const Home = () => {
     const [characters, setCharacters] = useState<Character[]>([]);
 
     return (
-        <div>
-            <Search setCharacters={setCharacters}/>
-            <CharacterDisplay characters={characters}/>
+        <div className="max-w-[720px] mx-auto p-4">
+            <Search setCharacters={setCharacters} />
+            <CharacterDisplay characters={characters} />
         </div>
-    )
+    );
 };
 
 export default Home;
