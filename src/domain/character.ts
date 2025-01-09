@@ -3,4 +3,5 @@ export default interface Character {
     image: string;
     name: string;
     species: string;
+    favorite: boolean;
 }
