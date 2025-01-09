@@ -5,5 +5,4 @@ const api = axios.create({
 });
 
 export const fetchCharactersByName = (name: string) => 
-  api.get(`/character/?name=${name}`);
-//TODO trocar por parametro
+  api.get(`/character`, { params: { name } });

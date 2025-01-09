@@ -9,12 +9,29 @@ export const useSearch = (setCharacters: (value: Character[]) => void) => {
 
   useEffect(() => {
     const subscription = searchSubject
-    .pipe(debounceTime(300), switchMap((name) => fetchCharactersByName(name).then(res => res.data.results).catch(() => null)))
-    .subscribe({
-        next: (results) => {
-            setCharacters(results == null ? [] : results);
+      .pipe(debounceTime(300), switchMap((name) => fetchCharactersByName(name).then(res => res.data.results).catch(() => null)))
+      .subscribe({
+        next: (response) => {
+          const favorites = localStorage.getItem('favorites');
+          
+          if(response != null) {
+            const favoriteCharacters: Character[] = favorites ? JSON.parse(favorites) : [];
+
+            //atualizar o valor de favorito dos personagens que buscamos agora com base no localstorage
+            const updatedCharacters = response.map((character: Character) => {
+              if (favoriteCharacters.some(fav => fav.id === character.id)) {
+                return { ...character, favorite: true };
+              }
+              return { ...character, favorite: false };
+            });
+
+            setCharacters(updatedCharacters);
+          }
+          else {
+            setCharacters([]);
+          }
         },
-    });
+      });
 
     return () => subscription.unsubscribe();
   }, []);
