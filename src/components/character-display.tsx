@@ -1,8 +1,13 @@
 import Character from "../domain/character";
 import { useCharacterDisplay } from "../hooks/useCharacterDisplay";
 
-const CharacterDisplay = ({ characters }: { characters: Character[] }) => {
-    const { setFavorite } = useCharacterDisplay(characters);
+interface CharacterDisplayProps {
+  setCharacters: (value: Character[]) => void;
+  characters : Character[];
+}
+
+const CharacterDisplay = ({ characters, setCharacters }: CharacterDisplayProps) => {
+    const { setFavorite } = useCharacterDisplay(characters, setCharacters);
 
     if (characters.length > 0) {
         return (

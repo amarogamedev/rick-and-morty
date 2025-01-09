@@ -17,7 +17,7 @@ const Home = () => {
                 </span>
                 <Search setCharacters={setCharacters} />
             </div>
-            <CharacterDisplay characters={characters} />
+            <CharacterDisplay characters={characters} setCharacters={setCharacters} />
         </div>
     );
 };
