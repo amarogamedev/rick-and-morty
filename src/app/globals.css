@@ -3,7 +3,7 @@
 @tailwind utilities;
 
 body {
-  color: white;
+  color: #FAFAFA;
   background: #1F1F1F;
   font-family: 'Poppins', 'Creepster';
 }
