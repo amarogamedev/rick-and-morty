@@ -4,9 +4,10 @@ import { useCharacterDisplay } from "../hooks/useCharacterDisplay";
 interface CharacterDisplayProps {
   setCharacters: (value: Character[]) => void;
   characters : Character[];
+  favoritesPage: boolean;
 }
 
-const CharacterDisplay = ({ characters, setCharacters }: CharacterDisplayProps) => {
+const CharacterDisplay = ({ characters, setCharacters, favoritesPage }: CharacterDisplayProps) => {
     const { setFavorite } = useCharacterDisplay(characters, setCharacters);
 
     if (characters.length > 0) {
@@ -40,8 +41,8 @@ const CharacterDisplay = ({ characters, setCharacters }: CharacterDisplayProps) 
     return (
         <div className="bg-[#0A0A0A] h-[512px] mt-8 rounded-xl border border-[#3D3D3D] flex items-center justify-center text-center">
             <div>
-                <p className="truncate text-2xl font-bold">Nada foi encontrado</p>
-                <p className="truncate text-[#A4A4A4] mt-2">Tente realizar uma nova busca.</p>
+                <p className="truncate text-2xl font-bold">{favoritesPage ? "Parece que você ainda não tem favoritos" : "Nada foi encontrado"}</p>
+                <p className="truncate text-[#A4A4A4] mt-2">{favoritesPage ? "Volte à página inicial e escolha os melhores para você." : "Tente realizar uma nova busca."}</p>
             </div>
         </div>
     )
