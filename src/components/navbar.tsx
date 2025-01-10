@@ -1,29 +1,37 @@
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 
 const Navbar = () => {
+  const location = useLocation();
+  const isActive = (path: string) => location.pathname === path;
+
   return (
-    <nav className="bg-[#0A0A0A]">
-      <Link to="/">
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="white" className="size-6">
-          <path d="M11.47 3.841a.75.75 0 0 1 1.06 0l8.69 8.69a.75.75 0 1 0 1.06-1.061l-8.689-8.69a2.25 2.25 0 0 0-3.182 0l-8.69 8.69a.75.75 0 1 0 1.061 1.06l8.69-8.689Z" />
-          <path d="m12 5.432 8.159 8.159c.03.03.06.058.091.086v6.198c0 1.035-.84 1.875-1.875 1.875H15a.75.75 0 0 1-.75-.75v-4.5a.75.75 0 0 0-.75-.75h-3a.75.75 0 0 0-.75.75V21a.75.75 0 0 1-.75.75H5.625a1.875 1.875 0 0 1-1.875-1.875v-6.198a2.29 2.29 0 0 0 .091-.086L12 5.432Z" />
-        </svg>
-        Início
-      </Link>
-
-      <Link to="/favorites">
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="white" className="size-6">
-          <path d="m11.645 20.91-.007-.003-.022-.012a15.247 15.247 0 0 1-.383-.218 25.18 25.18 0 0 1-4.244-3.17C4.688 15.36 2.25 12.174 2.25 8.25 2.25 5.322 4.714 3 7.688 3A5.5 5.5 0 0 1 12 5.052 5.5 5.5 0 0 1 16.313 3c2.973 0 5.437 2.322 5.437 5.25 0 3.925-2.438 7.111-4.739 9.256a25.175 25.175 0 0 1-4.244 3.17 15.247 15.247 0 0 1-.383.219l-.022.012-.007.004-.003.001a.752.752 0 0 1-.704 0l-.003-.001Z" />
-        </svg>
-        Favoritos
-      </Link>
-
-      <img className="ml-4"
+    <nav className="flex justify-between items-center bg-[#0A0A0A] px-6">
+      <img
         src="https://s3-alpha-sig.figma.com/img/ce2c/e613/cbd20ae0a78fff0c801b3cb6c1b80643?Expires=1737331200&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4&Signature=CyYZ4XRc0gJ0j14ttCf-mzOtiAh-DYt7uWiYfDBdJUnCZ2qU3nEXRIKtX96V3KTsCLNGhBdLFpLhvtXVyLFXJVtGpw2hUVfT6dOjTn7H3JHjv6MZdPBz5TQWjf6gcI39gyjX1zeCnKvRfqqEybpeE-cXyjwZv2oOJQKKexWsvzQ~HZ2SCVoM~qwOOF9ZBzyhIaz6rHaJ3xjS8YVK3P5t3hylTFne9zXppmUhw~Ugz-oPAQY~t0J9gix3Qk7tQzxZjT7QUEqJuFnHf4e01nKg-NBYs9meLBHPj-EhRq0bsOwVJtcM6bUupBobPrz~cIi4WlNtsyk2dMpCzDxLkpH8DQ__"
         alt="logo"
         width="114px"
         height="64px"
       />
+
+      <div className="inline-flex rounded-md shadow-sm" role="group">
+        <Link to="/" className={`flex gap-2 items-center rounded-s-xl p-3 h-[40px] font-[600] ${isActive("/") ? "bg-white text-black" : "bg-transparent text-[#A4A4A4] border border-[#5D5D5D]"}`}>
+          <svg width="24" height="24" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" fill={isActive("/") ? "black" : "#A4A4A4"} className="w-6 h-6">
+            <path d="M20.9688 12C20.9688 12.5625 20.5 13 19.9688 13H18.9688L19 18C19 18.0938 19 18.1875 19 18.25V18.75C19 19.4688 18.4375 20 17.75 20H17.25C17.1875 20 17.1562 20 17.125 20C17.0938 20 17.0312 20 17 20H16H15.25C14.5312 20 14 19.4688 14 18.75V18V16C14 15.4688 13.5312 15 13 15H11C10.4375 15 10 15.4688 10 16V18V18.75C10 19.4688 9.4375 20 8.75 20H8H7C6.9375 20 6.90625 20 6.84375 20C6.8125 20 6.78125 20 6.75 20H6.25C5.53125 20 5 19.4688 5 18.75V15.25C5 15.25 5 15.2188 5 15.1875V13H4C3.4375 13 3 12.5625 3 12C3 11.7188 3.09375 11.4688 3.3125 11.25L11.3125 4.25C11.5312 4.03125 11.7812 4 12 4C12.2188 4 12.4688 4.0625 12.6562 4.21875L20.625 11.25C20.875 11.4688 21 11.7188 20.9688 12Z" />
+          </svg>
+          Início
+        </Link>
+
+        <Link to="/favoritos" className={`flex gap-2 items-center rounded-e-xl p-3 h-[40px] font-[600] ${isActive("/favoritos") ? "bg-white text-black" : "bg-transparent text-[#A4A4A4] border border-[#5D5D5D]"}`}>
+          <svg width="24" height="24" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" fill={isActive("/favoritos") ? "black" : "#A4A4A4"} className="w-6 h-6">
+            <path d="M5.46875 13.4062C4.53125 12.5312 4 11.2812 4 9.96875V9.8125C4 7.625 5.5625 5.75 7.71875 5.40625C9.15625 5.15625 10.5938 5.625 11.625 6.625L12 7L12.375 6.625C13.375 5.625 14.8438 5.15625 16.25 5.40625C18.4062 5.75 20 7.625 20 9.8125V9.96875C20 11.2812 19.4375 12.5312 18.5 13.4062L12.8438 18.6875C12.625 18.9062 12.3125 19 12 19C11.6562 19 11.3438 18.9062 11.125 18.6875L5.46875 13.4062Z" />
+          </svg>
+          Favoritos
+          <div className={`flex justify-center items-center rounded-full h-[20px] min-w-[20px] px-1 pt-[1px] text-black ${isActive("/favoritos") ? "bg-transparent border border-black" : "bg-white"}`}>
+            {JSON.parse(localStorage.getItem('favorites') ?? "[]").length}
+          </div>
+        </Link>
+      </div>
+
     </nav>
   )
 };
