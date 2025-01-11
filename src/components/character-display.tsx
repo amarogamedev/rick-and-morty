@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 import Character from "../domain/character";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
+import { useEffect, useState } from "react";
 
 interface CharacterDisplayProps {
     setFavorite: (value: Character) => void;
@@ -9,17 +10,30 @@ interface CharacterDisplayProps {
 
 const CharacterDisplay = ({ setFavorite, favoritesPage }: CharacterDisplayProps) => {
     const queryClient = useQueryClient();
+    const [localCharacters, setLocalCharacters] = useState<Character[]>([]); 
     const page = favoritesPage ? "favorites" : "characters";
-    const { data: characters = [] } = useQuery<Character[]>(
-        {queryKey: [page], queryFn: () => queryClient.getQueryData([page]) ?? []}
-    );
+
+    const { data: characters = [] } = useQuery<Character[]>({queryKey: [page], queryFn: () => queryClient.getQueryData([page]) ?? []});
+
+    //precisamos disso pra renderizar novamente ao selecionar um favorito
+    useEffect(() => {
+        setLocalCharacters(characters);
+    }, [characters]);
+
+    const handleFavorite = (char: Character) => {
+        setFavorite(char);
+        const updatedCharacters = localCharacters?.map(c =>
+            c.id === char.id ? { ...c, favorite: !c.favorite } : c
+        );
+        setLocalCharacters(updatedCharacters);
+    };
 
     if (characters != null && characters.length > 0) {
         return (
             <div className="grid grid-cols-3 gap-5 overflow-auto mt-8">
                 {characters.map((char: Character) => (
                     <div key={char.id} className="bg-[#0A0A0A] rounded-xl border border-[#3D3D3D] relative">
-                        <div className="absolute top-2 right-2 cursor-pointer" onClick={() => setFavorite(char)}>
+                        <div className="absolute top-2 right-2 cursor-pointer" onClick={() => handleFavorite(char)}>
 
                             {/* ícone coração outline */}
                             {!char.favorite && <svg xmlns="http://www.w3.org/2000/svg" width="20" height="18" viewBox="0 0 20 18" strokeWidth="2" fill="white" className="size-5">

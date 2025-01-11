@@ -18,15 +18,23 @@ export const useSearch = () => {
       .pipe(debounceTime(300), switchMap((name) => fetchCharactersByName(name).then(res => res.data.results).catch(() => null)))
       .subscribe({
         next: (response: Character[]) => {
-          response.forEach(character => {
-            character.favorite = favorites.some(fav => fav.id === character.id);
+          const mappedCharacters = response.map(character => {
+            const mappedCharacter: Character = {
+              id: character.id,
+              name: character.name,
+              species: character.species,
+              image: character.image,
+              favorite: favorites.some(fav => fav.id === character.id),
+            };
+            return mappedCharacter;
           });
-          queryClient.setQueryData(['characters'], response);
+  
+          queryClient.setQueryData(['characters'], mappedCharacters);
         },
       });
 
     return () => subscription.unsubscribe();
-  }, [queryClient]);
+  }, [queryClient, favorites]);
 
   const search = (name: string) => searchSubject.next(name);
 

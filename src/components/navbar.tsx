@@ -5,7 +5,7 @@ import Character from "../domain/character";
 const Navbar = () => {
   const location = useLocation();
   const isActive = (path: string) => location.pathname === path;
-
+  
   const queryClient = useQueryClient();
   const { data: favorites = [] } = useQuery<Character[]>(
     { queryKey: ["favorites"], queryFn: () => queryClient.getQueryData(["favorites"]) ?? [] }
