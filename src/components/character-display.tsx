@@ -1,17 +1,20 @@
 import { Link } from "react-router-dom";
 import Character from "../domain/character";
-import { useCharacterDisplay } from "../hooks/useCharacterDisplay";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 
 interface CharacterDisplayProps {
-    setCharacters: (value: Character[]) => void;
-    characters: Character[];
+    setFavorite: (value: Character) => void;
     favoritesPage: boolean;
 }
 
-const CharacterDisplay = ({ characters, setCharacters, favoritesPage }: CharacterDisplayProps) => {
-    const { setFavorite } = useCharacterDisplay(characters, setCharacters);
+const CharacterDisplay = ({ setFavorite, favoritesPage }: CharacterDisplayProps) => {
+    const queryClient = useQueryClient();
+    const page = favoritesPage ? "favorites" : "characters";
+    const { data: characters = [] } = useQuery<Character[]>(
+        {queryKey: [page], queryFn: () => queryClient.getQueryData([page]) ?? []}
+    );
 
-    if (characters.length > 0) {
+    if (characters != null && characters.length > 0) {
         return (
             <div className="grid grid-cols-3 gap-5 overflow-auto mt-8">
                 {characters.map((char: Character) => (

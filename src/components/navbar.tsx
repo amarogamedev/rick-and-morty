@@ -1,8 +1,15 @@
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { Link, useLocation } from "react-router-dom";
+import Character from "../domain/character";
 
 const Navbar = () => {
   const location = useLocation();
   const isActive = (path: string) => location.pathname === path;
+
+  const queryClient = useQueryClient();
+  const { data: favorites = [] } = useQuery<Character[]>(
+    { queryKey: ["favorites"], queryFn: () => queryClient.getQueryData(["favorites"]) ?? [] }
+  );
 
   return (
     <nav className="flex justify-between items-center bg-[#0A0A0A] px-6">
@@ -27,7 +34,7 @@ const Navbar = () => {
           </svg>
           Favoritos
           <div className={`flex justify-center items-center rounded-full h-[20px] min-w-[20px] px-1 pt-[1px] text-black ${isActive("/favoritos") ? "bg-transparent border border-black" : "bg-white"}`}>
-            {JSON.parse(localStorage.getItem('favorites') ?? "[]").length}
+            {favorites.length}
           </div>
         </Link>
       </div>
