@@ -1,41 +1,42 @@
 "use client";
-import Home from "../pages/home";
+import Home from "../components/pages/home";
 import Navbar from "../components/navbar";
-import Favorites from "../pages/favorites";
-import { Route, Routes } from "react-router-dom";
-import { useQueryClient } from "@tanstack/react-query";
+import Favorites from "../components/pages/favorites";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import Character from "../domain/character";
 import { useState } from "react";
 
 export interface GenericPageProps {
     setFavorite: (character: Character) => void;
+    characters: Character[];
 }
 
 const Main = () => {
     const queryClient = useQueryClient();
-
-    const [favoriteCount, setFavoriteCount] = useState<number>(0); 
+    const { data: characters = [] } = useQuery<Character[]>({ queryKey: ["characters"], queryFn: () => queryClient.getQueryData(["characters"]) ?? [] });
+    const { data: favoriteCharacters = [] } = useQuery<Character[]>({ queryKey: ["favorites"], queryFn: () => queryClient.getQueryData(["favorites"]) ?? [] });
+    const [favoriteCount, setFavoriteCount] = useState<number>(favoriteCharacters.length); 
+    const [pageIndex, setPageIndex] = useState<number>(0);
 
     function setFavorite(character: Character) {
-        let favorites: Character[] = queryClient.getQueryData(['favorites']) ?? [];
+        let updatedFavorites: Character[] = [];
+        favoriteCharacters.forEach(char => updatedFavorites.push(Object.assign({}, char)));
         character.favorite = !character.favorite;
         if (character.favorite) {
-            favorites.push(character);
+            updatedFavorites.push(character);
         }
         else {
-            favorites = favorites.filter(fav => fav.id != character.id);
+            updatedFavorites = favoriteCharacters.filter(fav => fav.id != character.id);
         }
-        queryClient.setQueryData(['favorites'], favorites);
-        setFavoriteCount(favorites.length);
+        queryClient.setQueryData(['favorites'], updatedFavorites);
+        setFavoriteCount(updatedFavorites.length);
     }
 
     return (
         <>
-            <Navbar favoriteCount={favoriteCount} />
-            <Routes>
-                <Route path="/" element={<Home setFavorite={setFavorite} />} />
-                <Route path="/favoritos" element={<Favorites setFavorite={setFavorite} />} />
-            </Routes>
+            <Navbar favoriteCount={favoriteCount} pageIndex={pageIndex} setPageIndex={setPageIndex}/>
+            {pageIndex === 0 && <Home characters={characters} setFavorite={setFavorite} />}
+            {pageIndex === 1 && <Favorites characters={favoriteCharacters} setFavorite={setFavorite} />}
         </>
     );
 };

@@ -1,45 +1,19 @@
-import { Link } from "react-router-dom";
+import Link from "next/link";
 import Character from "../domain/character";
-import { useQuery, useQueryClient } from "@tanstack/react-query";
-import { useEffect, useState } from "react";
 
 interface CharacterDisplayProps {
     setFavorite: (value: Character) => void;
     favoritesPage: boolean;
+    characters: Character[];
 }
 
-const CharacterDisplay = ({ setFavorite, favoritesPage }: CharacterDisplayProps) => {
-    const queryClient = useQueryClient();
-    const [localCharacters, setLocalCharacters] = useState<Character[]>([]);
-    const page = favoritesPage ? "favorites" : "characters";
-
-    const { data: characters = [] } = useQuery<Character[]>({ queryKey: [page], queryFn: () => queryClient.getQueryData([page]) ?? [] });
-
-    //precisamos disso pra renderizar novamente ao selecionar um favorito
-    useEffect(() => {
-        setLocalCharacters(characters);
-    }, [characters]);
-
-    const handleFavorite = (char: Character) => {
-        setFavorite(char);
-        const updatedCharacters = localCharacters?.map(character => {
-            if (character.id === char.id) {
-                return { 
-                    ...character, 
-                    favorite: !character.favorite 
-                };
-            }
-            return character;
-        });
-        setLocalCharacters(updatedCharacters);
-    };
-
+const CharacterDisplay = ({ setFavorite, favoritesPage, characters }: CharacterDisplayProps) => {
     if (characters != null && characters.length > 0) {
         return (
             <div className="grid grid-cols-3 gap-5 overflow-auto mt-8">
                 {characters.map((char: Character) => (
                     <div key={char.id} className="bg-[#0A0A0A] rounded-xl border border-[#3D3D3D] relative overflow-hidden">
-                        <div className={`absolute top-[-48px] right-[-48px] cursor-pointer w-[96px] h-[96px] rounded-full ${char.favorite ? "bg-white" : "bg-[rgba(255,255,255,0.2)] backdrop-blur-md"}`} onClick={() => handleFavorite(char)}>
+                        <div className={`absolute top-[-48px] right-[-48px] cursor-pointer w-[96px] h-[96px] rounded-full ${char.favorite ? "bg-white" : "bg-[rgba(255,255,255,0.2)] backdrop-blur-md"}`} onClick={() => setFavorite(char)}>
                             <div className="h-[24px] w-[24px] absolute bottom-3 left-4">
                                 {/* ícone coração outline */}
                                 {!char.favorite && <svg xmlns="http://www.w3.org/2000/svg" width="20" height="18" viewBox="0 0 20 18" strokeWidth="2" fill="white" className="size-5">
@@ -66,7 +40,7 @@ const CharacterDisplay = ({ setFavorite, favoritesPage }: CharacterDisplayProps)
         <div className="bg-[#0A0A0A] h-[512px] mt-8 rounded-xl border border-[#3D3D3D] flex flex-col gap-4 items-center justify-center text-center">
             <p className="truncate text-2xl font-bold">{favoritesPage ? "Parece que você ainda não tem favoritos" : "Nada foi encontrado"}</p>
             <p className="truncate text-[#A4A4A4]">{favoritesPage ? "Volte à página inicial e escolha os melhores para você." : "Tente realizar uma nova busca."}</p>
-            {favoritesPage && <Link to="/" className="flex items-center justify-center rounded-lg p-3 h-[40px] w-[140px] text-[14px] font-[600] bg-white text-black">
+            {favoritesPage && <Link href="/" className="flex items-center justify-center rounded-lg p-3 h-[40px] w-[140px] text-[14px] font-[600] bg-white text-black">
                 Voltar ao início
             </Link>}
         </div>
