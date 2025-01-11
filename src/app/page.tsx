@@ -3,7 +3,6 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import { initializeApp } from "firebase/app";
 import Main from "./main";
-import RouterWrapper from "../components/routerWrapper";
 
 const App = () => {
   const queryClient = new QueryClient();
@@ -23,9 +22,7 @@ const App = () => {
   return (
     <QueryClientProvider client={queryClient}>
       <ReactQueryDevtools initialIsOpen={false} />
-      <RouterWrapper>
-        <Main />
-      </RouterWrapper>
+      <Main />
     </QueryClientProvider>
   );
 };

@@ -1,8 +1,7 @@
 "use client";
-import Home from "../pages/home";
+import Home from "../components/pages/home";
 import Navbar from "../components/navbar";
-import Favorites from "../pages/favorites";
-import { Route, Routes } from "react-router-dom";
+import Favorites from "../components/pages/favorites";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import Character from "../domain/character";
 import { useState } from "react";
@@ -17,6 +16,7 @@ const Main = () => {
     const { data: characters = [] } = useQuery<Character[]>({ queryKey: ["characters"], queryFn: () => queryClient.getQueryData(["characters"]) ?? [] });
     const { data: favoriteCharacters = [] } = useQuery<Character[]>({ queryKey: ["favorites"], queryFn: () => queryClient.getQueryData(["favorites"]) ?? [] });
     const [favoriteCount, setFavoriteCount] = useState<number>(favoriteCharacters.length); 
+    const [pageIndex, setPageIndex] = useState<number>(0);
 
     function setFavorite(character: Character) {
         let updatedFavorites: Character[] = [];
@@ -34,11 +34,9 @@ const Main = () => {
 
     return (
         <>
-            <Navbar favoriteCount={favoriteCount} />
-            <Routes>
-                <Route path="/" element={<Home characters={characters} setFavorite={setFavorite} />} />
-                <Route path="/favoritos" element={<Favorites characters={favoriteCharacters} setFavorite={setFavorite} />} />
-            </Routes>
+            <Navbar favoriteCount={favoriteCount} pageIndex={pageIndex} setPageIndex={setPageIndex}/>
+            {pageIndex === 0 && <Home characters={characters} setFavorite={setFavorite} />}
+            {pageIndex === 1 && <Favorites characters={favoriteCharacters} setFavorite={setFavorite} />}
         </>
     );
 };

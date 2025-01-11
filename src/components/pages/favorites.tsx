@@ -1,6 +1,6 @@
-import { GenericPageProps } from "../app/main";
-import CharacterDisplay from "../components/character-display";
-import CustomTitle from "../components/custom-title";
+import { GenericPageProps } from "../../app/main";
+import CharacterDisplay from "../character-display";
+import CustomTitle from "../custom-title";
 
 const Favorites: React.FC<GenericPageProps> = ({ setFavorite, characters }) => {    
     return (
