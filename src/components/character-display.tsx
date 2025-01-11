@@ -1,19 +1,15 @@
 import { Link } from "react-router-dom";
 import Character from "../domain/character";
-import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
 
 interface CharacterDisplayProps {
     setFavorite: (value: Character) => void;
     favoritesPage: boolean;
+    characters: Character[];
 }
 
-const CharacterDisplay = ({ setFavorite, favoritesPage }: CharacterDisplayProps) => {
-    const queryClient = useQueryClient();
+const CharacterDisplay = ({ setFavorite, favoritesPage, characters }: CharacterDisplayProps) => {
     const [localCharacters, setLocalCharacters] = useState<Character[]>([]);
-    const page = favoritesPage ? "favorites" : "characters";
-
-    const { data: characters = [] } = useQuery<Character[]>({ queryKey: [page], queryFn: () => queryClient.getQueryData([page]) ?? [] });
 
     //precisamos disso pra renderizar novamente ao selecionar um favorito
     useEffect(() => {
