@@ -22,9 +22,15 @@ const CharacterDisplay = ({ setFavorite, favoritesPage }: CharacterDisplayProps)
 
     const handleFavorite = (char: Character) => {
         setFavorite(char);
-        const updatedCharacters = localCharacters?.map(c =>
-            c.id === char.id ? { ...c, favorite: !c.favorite } : c
-        );
+        const updatedCharacters = localCharacters?.map(character => {
+            if (character.id === char.id) {
+                return { 
+                    ...character, 
+                    favorite: !character.favorite 
+                };
+            }
+            return character;
+        });
         setLocalCharacters(updatedCharacters);
     };
 
