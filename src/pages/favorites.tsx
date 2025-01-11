@@ -1,4 +1,4 @@
-import { GenericPageProps } from "../app/page";
+import { GenericPageProps } from "../app/main";
 import CharacterDisplay from "../components/character-display";
 import CustomTitle from "../components/custom-title";
 

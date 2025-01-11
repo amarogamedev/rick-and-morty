@@ -1,7 +1,7 @@
 import CharacterDisplay from "../components/character-display";
 import Search from "../components/search";
 import CustomTitle from "../components/custom-title";
-import { GenericPageProps } from "../app/page";
+import { GenericPageProps } from "../app/main";
 
 const Home: React.FC<GenericPageProps> = ({ setFavorite }) => {    
     return (
