@@ -1,13 +1,14 @@
-import Link from "next/link";
+import { Dispatch, SetStateAction } from "react";
 import Character from "../domain/character";
 
 interface CharacterDisplayProps {
     setFavorite: (value: Character) => void;
-    favoritesPage: boolean;
+    isHomePage: boolean;
     characters: Character[];
+    setPageIndex: Dispatch<SetStateAction<number>>;
 }
 
-const CharacterDisplay = ({ setFavorite, favoritesPage, characters }: CharacterDisplayProps) => {
+const CharacterDisplay = ({ setFavorite, isHomePage, characters, setPageIndex }: CharacterDisplayProps) => {
     if (characters != null && characters.length > 0) {
         return (
             <div className="grid grid-cols-3 gap-5 overflow-auto mt-8">
@@ -38,11 +39,11 @@ const CharacterDisplay = ({ setFavorite, favoritesPage, characters }: CharacterD
     }
     return (
         <div className="bg-[#0A0A0A] h-[512px] mt-8 rounded-xl border border-[#3D3D3D] flex flex-col gap-4 items-center justify-center text-center">
-            <p className="truncate text-2xl font-bold">{favoritesPage ? "Parece que você ainda não tem favoritos" : "Nada foi encontrado"}</p>
-            <p className="truncate text-[#A4A4A4]">{favoritesPage ? "Volte à página inicial e escolha os melhores para você." : "Tente realizar uma nova busca."}</p>
-            {favoritesPage && <Link href="/" className="flex items-center justify-center rounded-lg p-3 h-[40px] w-[140px] text-[14px] font-[600] bg-white text-black">
+            <p className="truncate text-2xl font-bold">{isHomePage ? "Nada foi encontrado" : "Parece que você ainda não tem favoritos"}</p>
+            <p className="truncate text-[#A4A4A4]">{isHomePage ? "Tente realizar uma nova busca." : "Volte à página inicial e escolha os melhores para você."}</p>
+            {!isHomePage && <button onClick={() => {setPageIndex(0)}} className="flex items-center justify-center rounded-lg p-3 h-[40px] w-[140px] text-[14px] font-[600] bg-white text-black">
                 Voltar ao início
-            </Link>}
+            </button>}
         </div>
     )
 };

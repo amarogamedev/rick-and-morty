@@ -18,18 +18,22 @@ export const useSearch = () => {
       .pipe(debounceTime(300), switchMap((name) => fetchCharactersByName(name).then(res => res.data.results).catch(() => null)))
       .subscribe({
         next: (response: Character[]) => {
-          const mappedCharacters = response.map(character => {
-            const mappedCharacter: Character = {
-              id: character.id,
-              name: character.name,
-              species: character.species,
-              image: character.image,
-              favorite: favorites.some(fav => fav.id === character.id),
-            };
-            return mappedCharacter;
-          });
-  
-          queryClient.setQueryData(['characters'], mappedCharacters);
+          if(response == null) {
+            queryClient.setQueryData(['characters'], []);
+          }
+          else {
+            const mappedCharacters = response.map(character => {
+              const mappedCharacter: Character = {
+                id: character.id,
+                name: character.name,
+                species: character.species,
+                image: character.image,
+                favorite: favorites.some(fav => fav.id === character.id),
+              };
+              return mappedCharacter;
+            });
+            queryClient.setQueryData(['characters'], mappedCharacters);
+          }
         },
       });
 
