@@ -1,6 +1,5 @@
 import { Link } from "react-router-dom";
 import Character from "../domain/character";
-import { useEffect, useState } from "react";
 
 interface CharacterDisplayProps {
     setFavorite: (value: Character) => void;
@@ -9,33 +8,12 @@ interface CharacterDisplayProps {
 }
 
 const CharacterDisplay = ({ setFavorite, favoritesPage, characters }: CharacterDisplayProps) => {
-    const [localCharacters, setLocalCharacters] = useState<Character[]>([]);
-
-    //precisamos disso pra renderizar novamente ao selecionar um favorito
-    useEffect(() => {
-        setLocalCharacters(characters);
-    }, [characters]);
-
-    const handleFavorite = (char: Character) => {
-        setFavorite(char);
-        const updatedCharacters = localCharacters?.map(character => {
-            if (character.id === char.id) {
-                return { 
-                    ...character, 
-                    favorite: !character.favorite 
-                };
-            }
-            return character;
-        });
-        setLocalCharacters(updatedCharacters);
-    };
-
     if (characters != null && characters.length > 0) {
         return (
             <div className="grid grid-cols-3 gap-5 overflow-auto mt-8">
                 {characters.map((char: Character) => (
                     <div key={char.id} className="bg-[#0A0A0A] rounded-xl border border-[#3D3D3D] relative overflow-hidden">
-                        <div className={`absolute top-[-48px] right-[-48px] cursor-pointer w-[96px] h-[96px] rounded-full ${char.favorite ? "bg-white" : "bg-[rgba(255,255,255,0.2)] backdrop-blur-md"}`} onClick={() => handleFavorite(char)}>
+                        <div className={`absolute top-[-48px] right-[-48px] cursor-pointer w-[96px] h-[96px] rounded-full ${char.favorite ? "bg-white" : "bg-[rgba(255,255,255,0.2)] backdrop-blur-md"}`} onClick={() => setFavorite(char)}>
                             <div className="h-[24px] w-[24px] absolute bottom-3 left-4">
                                 {/* ícone coração outline */}
                                 {!char.favorite && <svg xmlns="http://www.w3.org/2000/svg" width="20" height="18" viewBox="0 0 20 18" strokeWidth="2" fill="white" className="size-5">
