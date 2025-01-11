@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import Link from "next/link";
 import Character from "../domain/character";
 
 interface CharacterDisplayProps {
@@ -40,7 +40,7 @@ const CharacterDisplay = ({ setFavorite, favoritesPage, characters }: CharacterD
         <div className="bg-[#0A0A0A] h-[512px] mt-8 rounded-xl border border-[#3D3D3D] flex flex-col gap-4 items-center justify-center text-center">
             <p className="truncate text-2xl font-bold">{favoritesPage ? "Parece que você ainda não tem favoritos" : "Nada foi encontrado"}</p>
             <p className="truncate text-[#A4A4A4]">{favoritesPage ? "Volte à página inicial e escolha os melhores para você." : "Tente realizar uma nova busca."}</p>
-            {favoritesPage && <Link to="/" className="flex items-center justify-center rounded-lg p-3 h-[40px] w-[140px] text-[14px] font-[600] bg-white text-black">
+            {favoritesPage && <Link href="/" className="flex items-center justify-center rounded-lg p-3 h-[40px] w-[140px] text-[14px] font-[600] bg-white text-black">
                 Voltar ao início
             </Link>}
         </div>
