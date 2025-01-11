@@ -1,6 +1,10 @@
 import { Link, useLocation } from "react-router-dom";
 
-const Navbar = () => {
+interface NavbarProps {
+  favoriteCount: number;
+}
+
+const Navbar = ({favoriteCount} : NavbarProps) => {
   const location = useLocation();
   const isActive = (path: string) => location.pathname === path;
 
@@ -27,7 +31,7 @@ const Navbar = () => {
           </svg>
           Favoritos
           <div className={`flex justify-center items-center rounded-full h-[20px] min-w-[20px] px-1 pt-[1px] text-black ${isActive("/favoritos") ? "bg-transparent border border-black" : "bg-white"}`}>
-            {JSON.parse(localStorage.getItem('favorites') ?? "[]").length}
+            {favoriteCount}
           </div>
         </Link>
       </div>

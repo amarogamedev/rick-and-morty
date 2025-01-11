@@ -1,17 +1,14 @@
-import { useState } from "react";
+import { GenericPageProps } from "../app/main";
 import CharacterDisplay from "../components/character-display";
-import Character from "../domain/character";
 import CustomTitle from "../components/custom-title";
 
-const Favorites = () => {
-    const [characters, setCharacters] = useState<Character[]>([]);
-
+const Favorites: React.FC<GenericPageProps> = ({ setFavorite }) => {    
     return (
         <div className="max-w-[720px] mx-auto p-4">
             <div className="my-4 h-12">
                 <CustomTitle text={"Favoritos"} />
             </div>
-            <CharacterDisplay characters={characters} setCharacters={setCharacters} favoritesPage={true} />
+            <CharacterDisplay setFavorite={setFavorite} favoritesPage={true} />
         </div>
     );
 };
