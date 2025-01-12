@@ -15,13 +15,10 @@ export const useSearch = () => {
 
   useEffect(() => {
     const subscription = searchSubject
-      .pipe(debounceTime(300), switchMap((name) => fetchCharactersByName(name).then(res => res.data.results).catch(() => null)))
+      .pipe(debounceTime(300), switchMap((name) => fetchCharactersByName(name).then(res => res.data.results).catch(() => queryClient.setQueryData(['characters'], []))))
       .subscribe({
         next: (response: Character[]) => {
-          if(response == null) {
-            queryClient.setQueryData(['characters'], []);
-          }
-          else {
+          if(response !== null) {
             const mappedCharacters = response.map(character => {
               const mappedCharacter: Character = {
                 id: character.id,
