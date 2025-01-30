@@ -3,7 +3,6 @@ Disponível em https://amarogamedev.github.io/rick-and-morty/
 
 ## Informações
 - Tecnologias utilizadas: React.js, Next.js, TypeScript, RxJS, Hooks, Tailwind CSS, React Query, GitHub Pages
-- Protótipo disponível no [Figma](https://www.figma.com/design/c8xS5wew3KBVVY62BS2imT/-internal--%F0%9F%94%93-Teste-t%C3%A9cnico)
 - Utilizada a API pública [rickandmortyapi](https://rickandmortyapi.com/documentation/#introduction)
 
 ## Funcionalidades
